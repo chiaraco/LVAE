@@ -28,12 +28,10 @@ The algorithm can be used as follows:
 #######################################################
 ##### import required functions
 
-# You have to be in the folder where functionsHABiC.py is.
+# You have to be in the folder where functionsLVAE.py is.
 
 import pandas
-from sklearn.metrics import matthews_corrcoef as MCC
-from functionsHABiC import classification
-from functionsHABiC import performances 
+from functionsLVAE import *
 
 #######################################################
 ##### load your data
@@ -56,7 +54,7 @@ Yext2 = pandas.read_csv(...) # class to predict for external dataset 2
 # https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.OneHotEncoder.html
 
 
-# With the included datasets (in the same folder than the one with functionsHABiC.py file)
+# With the included datasets (in the same folder than the one with functionsLVAE.py file)
 #-------------------------------------------------------------------------------------------------
 
 to_load = 'data'
@@ -71,37 +69,22 @@ Yext1 = data_valid['Y'].copy() # Y for validation is not required, but can be lo
 
 
 #######################################################
-##### choose HABiC parameters (example)
+##### choose LVAE parameters (example)
 
-# if naive.HABiC
-params_naive = {'meth':'naive.HABiC'}  
+model = LabeledVariationalAutoencoder(data,2,batch_size,epochs) ### à revoir + ajouter functionsLVAE.py (pour binaire)
 
-# if bagPLS.HABiC
-params_bagPLS = {'meth':'bagPLS.HABiC', 'NbTrees':50, 'NbVarImp':3}
+## you can adapt generate prior to your own data (if not binary and not in 2D etc)
 
-#see all implemented methods and their associated parameters in the table below
-
-```
-
-
-**Implemented methods:**
-| Method 						                    | Key 					| Parameters 										                                                                            |
-|:--------------------------------------------------|:----------------------|:------------------------------------------------------------------------------------------------------------------------------|
-| HABiC (naive approach)	                        | "naive.HABiC" 		|                                         			                                                                            |
-| HABiC after reduction by PCA					    | "redPCA.HABiC" 		| 'DimRed' : dimension reduction to select            	                                                                                |
-| HABiC after reduction by PLS-DA				    | "redPLS.HABiC" 		| 'DimRed' : dimension reduction to select    					                                                                        |
-| HABiC with standard bagging				        | "bagSTD.HABiC" 		| 'NbTrees' : number of sub-algorithms	to select  			                                                                            |
-| HABiC with bagging and RF feature selection 		| "bagRF.HABiC" 		| 'NbTrees' : number of sub-algorithms, 'NbVarImp' : number of features to select	                                            |
-| HABiC with bagging and PLS-DA feature selection	| "bagPLS.HABiC" 	    | 'NbTrees' : number of sub-algorithms, 'NbVarImp' : number of features to select	                                            |
-| Wasserstein Neural Netwrok 	                    | "Wass-NN" 	        | 'struct' : net architecture ('hidden_layer_sizes', 'activation', 'solver', 'batch_size', 'learning_rate_init', 'max_iter', 'lambd') |
-
-```python
 
 #######################################################
 ##### run the selected classifier
 
 # With your own datasets
 #------------------------
+
+model.trainn()
+plot latent
+recon
 
 # first, use 'classification' function that allows to train the classifier and perform predictions at the same time:
 
