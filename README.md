@@ -1,9 +1,9 @@
 # Implementation of LVAE
 
 ## Installation
-Before using HABiC, it is necessary to install requirements presented in [`requirements.yml`](requirements.yml) file.
+Before using LVAE, it is necessary to install requirements presented in [`requirements.yml`](requirements.yml) file.
 
-If you are using `conda`, you can install an environment called `HABiCenv`. First, clone this repository ([Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)), or download ([Downloading a repository](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github)) and unpack it. 
+If you are using `conda`, you can install an environment called `AEenv`. First, clone this repository ([Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)), or download ([Downloading a repository](https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github)) and unpack it. 
 
 Then, open an Anaconda prompt and run the following command :
 ```bash
@@ -13,7 +13,7 @@ Then, open an Anaconda prompt and run the following command :
 
 The IDE is not included in the environment, so you can install one if necessary.
 ```bash
-> conda activate HABiCenv
+> conda activate AEenv
 #if needed:
 > conda install spyder  
 > spyder 
