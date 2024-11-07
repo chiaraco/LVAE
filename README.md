@@ -31,6 +31,8 @@ The algorithm can be used as follows:
 # You have to be in the folder where functionsLVAE.py is.
 
 import pandas
+import torch as th
+import matplotlib.pyplot as plt
 from functionsLVAE import *
 
 #######################################################
@@ -69,65 +71,65 @@ Yval1 = data_valid['Y'].copy() # Y for validation is not required, but can be lo
 
 
 #######################################################
-##### choose LVAE parameters (example)
-
-model = LabeledVariationalAutoencoder(means=[-1,1], input_dim=X.shape[1], latent_dim=3, n_epochs=100, hidden_sizes=[1000,500], lr=1e-3, opti='Adam', wd=0)
-
-#######################################################
-##### run the selected classifier
+##### run LVAE (choose parameters)
 
 # With your own datasets
 #------------------------
 
-model.trainn()
-plot latent
-recon_one_obs
+###### important remark
+# functionsLVAE.py is adapted to binary classification for tabular data with only mean of prior changement
+# you can adapt this to your own data
+# there is an example with MNIST data : adapted to multiclass, image and 2D reduction
+######
 
-# first, use 'classification' function that allows to train the classifier and perform predictions at the same time:
 
-pred = classification(X, Y, [Xext1,Xext2], ['ExtSet.1','ExtSet.2'], param=params_naive)
-         # X, Y # train dataset
-         # [Xext1,Xext2]  # all dataframes for external datasets, with variables in column and observations in row
-         # ['ExtSet.1','ExtSet.2'] # output names to choose for the results table, 'Train' is automatically included
-         # (here, it will be 'Train', 'ExtSet.1','ExtSet.2')
+# first, create a LabeledVariationalAutoencoder class with chosen parameters and train the algorithm with your own data
+model = LabeledVariationalAutoencoder(means=[-1,1], input_dim=X.shape[1], latent_dim=2, n_epochs=100, hidden_sizes=[1000,500], lr=1e-3, opti='Adam', wd=0)
+model.trainn(X,Y)
 
-# 'pred' will returns a dictionary with the names of the predicted datasets in keys,
-# and the class predictions for each observation in values.
-# example : you can access to the predictions of 'ExtSet.1'with:
-pred['ExtSet.1]
 
-# then, 'performances' function allows to evaluate prediction performance if the true class is known:
+# then, look at latent space (if not in 2D, PCA step is added), and reconstruction quality
+fig,axs = plt.subplots(2,number_of_datasets,figsize=(12,10)) # number_of_datasets = 3
+plot_latent_vectors(None, 'initial', datasets_x, datasets_y, axs[0]) # datasets_x = [X,Xext1,Xext2] / datasets_y = [Y,Yext1,Yext2]
+plot_latent_vectors(model, 'LVAE', datasets_x, datasets_y, axs[1]) # datasets_x = [X,Xext1,Xext2] / datasets_y = [Y,Yext1,Yext2]
+plt.tight_layout()
+plt.show()
 
-perf = performances(Yext1,pred['ExtSet.1'], metr='MCC')
-# available metrics : 'MCC' (Matthews correlation coefficient), 'ACC' (accuracy score), 'AUC' (area under the ROC curve)
+obs = X.iloc[0,]
+plot_reconstructed_data(model, obs) # observe one initial observation and its reconstruction
+
+
+# finally, you can add a classification step, trained on initial and reduced data, and compare their performances 
+Xred = model.encoder(th.FloatTensor(X.values))[0] # reduced data is obtained with this command
 
 
 # With the included datasets (loaded above)
 #-------------------------------------------------------------------------------------------------
 
-# Classifier training and prediction:
-pred = classification(X, Y, [Xval1], ['Valid.1'], param=params_naive)
+model = LabeledVariationalAutoencoder(means=[-1,1], input_dim=X.shape[1], latent_dim=2, n_epochs=100, hidden_sizes=[1000,500], lr=1e-3, opti='Adam', wd=0)
+model.trainn(X,Y)
 
-# prediction performance (# available metrics : 'MCC', 'AUC', 'ACC')
-perf = performances(Yval1,pred['Valid.1'], metr='MCC') 
+fig,axs = plt.subplots(2,2,figsize=(12,10))
+plot_latent_vectors(None, 'initial', [X,Xval1], [Y,Yval1], axs[0])
+plot_latent_vectors(model, 'LVAE', [X,Xval1], [Y,Yval1], axs[1])
+plt.tight_layout()
+plt.show()
 
-
-# this function is adapted to binary classification for tabular data with only mean of prior changement
-# you can adapt this to your own data
-# there is an example with MNIST data : multiclass, image in 2D reduction
+obs = X.iloc[0,]
+plot_reconstructed_data(model, obs) # observe one initial observation and its reconstruction
 
 
 ```
 
-## Run an example with synthetic data testing all methods with cross validation 
+## Run an example with MNIST data testing several autoencoders (standard AE, variational AE, labeled adversarial AE and our labeled variational AE) 
 
 For a complete running example on MNIST dataset, please see [scriptAEs.py](scriptAEs.py).
-The code generates two DataFrames with prediction performances (mean and standard deviation) of all presented algorithms. 
+The code generates three plots two DataFrames with latent and reconstruction visualisation, and prediction performances (mean and standard deviation). 
 
 To run the example code, activate the conda environment and execute the code from the root of the project:
 ```bash
-> conda activate HABiCenv
-> python scriptHABiC.py
+> conda activate AEenv
+> python scriptAEs.py
 ```
 
 
