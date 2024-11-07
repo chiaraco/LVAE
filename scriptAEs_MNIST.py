@@ -28,7 +28,7 @@ from pythae.models.nn import BaseEncoder, BaseDecoder, BaseMetric
 from pythae.models.base.base_utils import ModelOutput
 import logging
 
-from functionsAEs import *
+from functionsAEs_MNIST import *
 
 
 ######### create datasets
