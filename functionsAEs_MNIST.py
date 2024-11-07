@@ -65,8 +65,6 @@ def plot_latent_vectors(AE, AE_type, datasets_x, datasets_y, ax):
         elif AE_type in ['VAE','AE'] : 
             batch_z = AE.encoder(data_x)['embedding']
 
-        # print(batch_z.shape)
-
         plot_data = {}
         for i, z in enumerate(batch_z):
             if data_y[i].item() not in plot_data:
@@ -80,8 +78,7 @@ def plot_latent_vectors(AE, AE_type, datasets_x, datasets_y, ax):
             ax[n].scatter(data['x'], data['y'], c=colors[label], label=label, edgecolors='none',s=2)
             if AE_type == 'initial' : ax[n].set_title(name[n])
             if n==0 : ax[n].set_ylabel(AE_type)
-        # ax.legend()
-        # return plot_data
+
 
 def plot_reconstructed_data(AE, AE_type, datasets_x, sf):
 
@@ -90,7 +87,7 @@ def plot_reconstructed_data(AE, AE_type, datasets_x, sf):
     for n,data_x in enumerate(datasets_x):
 
         if AE_type == 'initial' : 
-            batch_recon = data_x[:9].detach().cpu().numpy()#torch.FloatTensor(pca.transform(data_x.flatten(1).detach().cpu().numpy()))
+            batch_recon = data_x[:9].detach().cpu().numpy()
         if AE_type == 'LAAE' : 
             batch_recon = AE.decoder(AE.encoder(data_x[:9])).detach().cpu().numpy()
         elif AE_type == 'LVAE' : 
@@ -302,7 +299,7 @@ class LabeledAdversarialAutoencoder(nn.Module):
         for epoch in tqdm(range(1, self.n_epochs + 1)):
             rec,dis,enc=[],[],[]
             for batch_x, batch_y in self.train_loader:
-                batch_x = batch_x.to(device) #.view(self.batch_size, -1)
+                batch_x = batch_x.to(device)
                 batch_y = batch_y.to(device)
                 z_real_dist = self.generate_sample_prior(batch_y).to(device)
 
@@ -454,7 +451,7 @@ class LabeledVariationalAutoencoder(nn.Module):
             for lab in range(self.n_labels):
                 kl[f'kl{lab}']=[]
             for bat,(batch_x, batch_y) in enumerate(self.train_loader):
-                batch_x = batch_x.to(device) #.view(-1,28,28)
+                batch_x = batch_x.to(device)
                 batch_y = batch_y.to(device)
 
                 self.optimizer.zero_grad()
