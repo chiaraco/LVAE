@@ -179,7 +179,7 @@ model_LVAE.trainn()
 # Latent space visualisation
 #------------------------------------
 
-fig,axs = plt.subplots(5,4,figsize=(12,10)) # sharex='row',sharey='row'
+fig,axs = plt.subplots(5,4,figsize=(12,10))
 
 plot_latent_vectors(None, 'initial', [train_x,test_x,testS75_x,testS50_x], [train_y,test_y,testS75_y,testS50_y], axs[0])
 
@@ -191,6 +191,7 @@ plot_latent_vectors(model_LAAE, 'LAAE', [train_x,test_x,testS75_x,testS50_x], [t
 
 plot_latent_vectors(model_LVAE, 'LVAE', [train_x,test_x,testS75_x,testS50_x], [train_y,test_y,testS75_y,testS50_y], axs[4])
 
+plt.title('Latent space visualisation')
 plt.tight_layout()
 plt.show()
 
@@ -213,6 +214,7 @@ plot_reconstructed_data(model_LAAE, 'LAAE', [train_x,test_x,testS75_x,testS50_x]
 
 plot_reconstructed_data(model_LVAE, 'LVAE', [train_x,test_x,testS75_x,testS50_x], subfigs[4])
 
+plt.title('Reconstruction visualisation')
 plt.tight_layout()
 plt.show()
 
@@ -256,7 +258,7 @@ for AE_type,model in zip(['initial','LVAE','AE','VAE','LAAE'],[None,model_LVAE,m
 
 res_rf.groupby(level=1, axis=1).mean().plot(kind='bar',yerr=res_rf.groupby(level=1, axis=1).std())
 plt.ylabel('MCC (mean of 5 CV)')
-
+plt.title('Prediction performances (Random Forest)')
 
 
 
