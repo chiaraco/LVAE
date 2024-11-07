@@ -44,8 +44,8 @@ X = pandas.read_csv(...) # pandas DataFrame with observations in row, genes in c
 Y = pandas.read_csv(...) # pandas Series with class to predict
 
 # External dataset(s) - Y for external dataset can be loaded if available, to realize performance tests.
-Xval1 = pandas.read_csv(...) # pandas DataFrame with observations in row, genes in column for external dataset 1
-Xval2 = pandas.read_csv(...) # obs/gene dataframe for external dataset 2
+Xext1 = pandas.read_csv(...) # pandas DataFrame with observations in row, genes in column for external dataset 1
+Xext2 = pandas.read_csv(...) # obs/gene dataframe for external dataset 2
 # Optional:
 Yext1 = pandas.read_csv(...) # pandas Series with class to predict for external dataset 1
 Yext2 = pandas.read_csv(...) # class to predict for external dataset 2
@@ -64,17 +64,14 @@ X = data_train.drop('Y',axis=1)
 Y = data_train['Y'].copy()
 
 data_valid = pandas.read_csv(f'{to_load}/valid.csv',header=0,index_col=0)
-Xext1 = data_valid.drop('Y',axis=1)
-Yext1 = data_valid['Y'].copy() # Y for validation is not required, but can be loaded in order to allow perfomance evaluation
+Xval1 = data_valid.drop('Y',axis=1)
+Yval1 = data_valid['Y'].copy() # Y for validation is not required, but can be loaded in order to allow perfomance evaluation
 
 
 #######################################################
 ##### choose LVAE parameters (example)
 
-model = LabeledVariationalAutoencoder(data,2,batch_size,epochs) ### à revoir + ajouter functionsLVAE.py (pour binaire)
-
-## you can adapt generate prior to your own data (if not binary and not in 2D etc)
-
+model = LabeledVariationalAutoencoder(means=[-1,1], input_dim=X.shape[1], latent_dim=3, n_epochs=100, hidden_sizes=[1000,500], lr=1e-3, opti='Adam', wd=0)
 
 #######################################################
 ##### run the selected classifier
@@ -84,7 +81,7 @@ model = LabeledVariationalAutoencoder(data,2,batch_size,epochs) ### à revoir + 
 
 model.trainn()
 plot latent
-recon
+recon_one_obs
 
 # first, use 'classification' function that allows to train the classifier and perform predictions at the same time:
 
@@ -115,11 +112,16 @@ pred = classification(X, Y, [Xval1], ['Valid.1'], param=params_naive)
 perf = performances(Yval1,pred['Valid.1'], metr='MCC') 
 
 
+# this function is adapted to binary classification for tabular data with only mean of prior changement
+# you can adapt this to your own data
+# there is an example with MNIST data : multiclass, image in 2D reduction
+
+
 ```
 
 ## Run an example with synthetic data testing all methods with cross validation 
 
-For a complete running example on synthetic dataset, please see [scriptHABiC.py](scriptHABiC.py).
+For a complete running example on MNIST dataset, please see [scriptAEs.py](scriptAEs.py).
 The code generates two DataFrames with prediction performances (mean and standard deviation) of all presented algorithms. 
 
 To run the example code, activate the conda environment and execute the code from the root of the project:
