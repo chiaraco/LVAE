@@ -76,19 +76,19 @@ Yval1 = data_valid['Y'].copy() # Y for validation is not required, but can be lo
 # With your own datasets
 #------------------------
 
-###### important remark
-# functionsLVAE.py is adapted to binary classification for tabular data with only mean of prior changement
+###### important note
+# functionsLVAE.py is suitable for binary classification for tabular data whose priors are normal distributions and are different between classes only by their mean
 # you can adapt this to your own data
-# there is an example with MNIST data : adapted to multiclass, image and 2D reduction
+# there is an example with MNIST data: suitable for multiclass, image and 2D reduction
 ######
 
 
-# first, create a LabeledVariationalAutoencoder class with chosen parameters and train the algorithm with your own data
+# first, create a LabeledVariationalAutoencoder class with the chosen parameters and train the algorithm with your own data
 model = LabeledVariationalAutoencoder(means=[-1,1], input_dim=X.shape[1], latent_dim=2, n_epochs=100, hidden_sizes=[1000,500], lr=1e-3, opti='Adam', wd=0)
 model.trainn(X,Y)
 
 
-# then, look at latent space (if not in 2D, PCA step is added), and reconstruction quality
+# then, observe the latent space (if it is not 2D, a PCA step is added), and the quality of the reconstruction
 fig,axs = plt.subplots(2,number_of_datasets,figsize=(12,10)) # number_of_datasets = 3
 plot_latent_vectors(None, 'initial', datasets_x, datasets_y, axs[0]) # datasets_x = [X,Xext1,Xext2] / datasets_y = [Y,Yext1,Yext2]
 plot_latent_vectors(model, 'LVAE', datasets_x, datasets_y, axs[1]) # datasets_x = [X,Xext1,Xext2] / datasets_y = [Y,Yext1,Yext2]
@@ -96,11 +96,11 @@ plt.tight_layout()
 plt.show()
 
 obs = X.iloc[0,]
-plot_reconstructed_data(model, obs) # observe one initial observation and its reconstruction
+plot_reconstructed_data(model, obs) # observe an initial observation and its reconstruction
 
 
 # finally, you can add a classification step, trained on initial and reduced data, and compare their performances 
-Xred = model.encoder(th.FloatTensor(X.values))[0] # reduced data is obtained with this command
+Xred = model.encoder(th.FloatTensor(X.values))[0] # the reduced data is obtained with this command
 
 
 # With the included datasets (loaded above)
@@ -116,7 +116,7 @@ plt.tight_layout()
 plt.show()
 
 obs = X.iloc[0,]
-plot_reconstructed_data(model, obs) # observe one initial observation and its reconstruction
+plot_reconstructed_data(model, obs)
 
 
 ```
