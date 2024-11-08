@@ -116,10 +116,10 @@ def plot_latent_vectors(AE, AE_type, datasets_x, datasets_y, ax):
         if AE_type == 'initial' : 
             if n==0 :
                 pca = PCA(n_components = 2)
-                pca.fit(data_x.flatten(1).detach().cpu().numpy())
-            batch_z = th.FloatTensor(pca.transform(data_x.flatten(1).detach().cpu().numpy()))
+                pca.fit(data_x)
+            batch_z = th.FloatTensor(pca.transform(data_x))
         elif AE_type == 'LVAE' : 
-            batch_z, _ = AE.encoder(data_x)
+            batch_z, _ = AE.encoder(th.FloatTensor(data_x.values))
             if batch_z.shape[1]>2 :
                 if n==0 :
                     pca = PCA(n_components = 2)
@@ -128,10 +128,10 @@ def plot_latent_vectors(AE, AE_type, datasets_x, datasets_y, ax):
 
         plot_data = {}
         for i, z in enumerate(batch_z):
-            if data_y[i].item() not in plot_data:
-                plot_data[data_y[i].item()] = {'x':[], 'y':[]}
-            plot_data[data_y[i].item()]['x'].append(z[0].item())
-            plot_data[data_y[i].item()]['y'].append(z[1].item())
+            if data_y.iloc[i] not in plot_data:
+                plot_data[data_y.iloc[i]] = {'x':[], 'y':[]}
+            plot_data[data_y.iloc[i]]['x'].append(z[0].item())
+            plot_data[data_y.iloc[i]]['y'].append(z[1].item())
 
         for label, data in plot_data.items():
             ax[n].scatter(data['x'], data['y'], c=colors[label], label=label, edgecolors='none',s=2)
