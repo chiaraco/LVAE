@@ -123,13 +123,13 @@ plot_reconstructed_data(model, obs)
 
 ## Run an example with MNIST data testing several autoencoders (standard AE, variational AE, labeled adversarial AE and our labeled variational AE) 
 
-For a complete running example on MNIST dataset, please see [scriptAEs.py](scriptAEs.py).
+For a complete running example on MNIST dataset, please see [scriptAEs_MNIST.py](scriptAEs_MNIST.py).
 The code generates three plots two DataFrames with latent and reconstruction visualisation, and prediction performances (mean and standard deviation). 
 
 To run the example code, activate the conda environment and execute the code from the root of the project:
 ```bash
 > conda activate AEenv
-> python scriptAEs.py
+> python scriptAEs_MNIST.py
 ```
 
 
