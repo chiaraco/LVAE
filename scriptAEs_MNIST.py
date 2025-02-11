@@ -210,7 +210,7 @@ def train():
     
     plot_latent_vectors(model_LVAE, 'LVAE', [train_x,test_x,testS75_x,testS50_x], [train_y,test_y,testS75_y,testS50_y], axs[4])
     
-    plt.title('Latent space visualisation',y=0.98)
+    fig.suptitle('Latent space visualisation',y=0.98)
     plt.tight_layout()
     plt.show()
     
@@ -233,7 +233,7 @@ def train():
     
     plot_reconstructed_data(model_LVAE, 'LVAE', [train_x,test_x,testS75_x,testS50_x], subfigs[4])
     
-    plt.title('Reconstruction visualisation', y=0.98)
+    fig.suptitle('Reconstruction visualisation', y=0.98)
     plt.tight_layout()
     plt.show()
     
