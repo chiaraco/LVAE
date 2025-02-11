@@ -198,7 +198,7 @@ def train():
     # Latent space visualisation
     #------------------------------------
     
-    fig,axs = plt.subplots(5,4,figsize=(12,10))
+    fig,axs = plt.subplots(5,4,figsize=(10,8))
     
     plot_latent_vectors(None, 'initial', [train_x,test_x,testS75_x,testS50_x], [train_y,test_y,testS75_y,testS50_y], axs[0])
     
@@ -210,7 +210,7 @@ def train():
     
     plot_latent_vectors(model_LVAE, 'LVAE', [train_x,test_x,testS75_x,testS50_x], [train_y,test_y,testS75_y,testS50_y], axs[4])
     
-    plt.title('Latent space visualisation')
+    plt.title('Latent space visualisation',y=0.98)
     plt.tight_layout()
     plt.show()
     
@@ -220,7 +220,7 @@ def train():
     # Reconstruction visualisation
     #------------------------------------
     
-    fig = plt.figure(constrained_layout=True,figsize=(12,10))
+    fig = plt.figure(constrained_layout=True,figsize=(8,7))
     subfigs = fig.subfigures(5, 4, hspace=0.1, wspace=0.05)
     
     plot_reconstructed_data(None, 'initial', [train_x,test_x,testS75_x,testS50_x], subfigs[0])
@@ -233,7 +233,7 @@ def train():
     
     plot_reconstructed_data(model_LVAE, 'LVAE', [train_x,test_x,testS75_x,testS50_x], subfigs[4])
     
-    plt.title('Reconstruction visualisation')
+    plt.title('Reconstruction visualisation', y=0.98)
     plt.tight_layout()
     plt.show()
     
@@ -275,9 +275,10 @@ def train():
                 res_rf.loc[AE_type,(f'CV{cv+1}',name)] = MCC(Ydata[name],rf.predict(Xdata[name]))
     
     
-    res_rf.groupby(level=1, axis=1).mean().plot(kind='bar',yerr=res_rf.groupby(level=1, axis=1).std())
+    res_rf.T.groupby(level=1).mean().plot(kind='bar',yerr=res_rf.T.groupby(level=1).std()).iloc[::-1,:]
     plt.ylabel('MCC (mean of 5 CV)')
-    plt.title('Prediction performances (Random Forest)')
+    plt.suptitle('Prediction performances (Random Forest)', y=0.98)
+    plt.show()
 
 
 
