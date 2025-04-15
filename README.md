@@ -136,11 +136,11 @@ To run the example code, activate the conda environment and execute the code fro
 ## Transcriptomics data preprocessing
 When using transcriptomics data, validation datasets are prealably homogenised with the train dataset using MatchMixeR algorithm (https://doi.org/10.1093/bioinformatics/btz974).
 The script for homogenisation is available in [preprocessing.R](preprocessing.R) (with MatchMixer, the reference dataset (here, train dataset) is not modified, only the validation one).
-Train and external validation datasets after homogenisation (including class to predict and standard prognostic variables) are available on Zenodo: [10.5281/zenodo.13820096](https://doi.org/10.5281/zenodo.13820096)
+Train and external validation datasets after homogenisation (including class to predict and standard prognostic variables) are available on Zenodo: [10.5281/zenodo.15210652](https://doi.org/10.5281/zenodo.15210652)
 
 METABRIC dataset was initially downloaded from https://www.cbioportal.org/study/summary?id=brca_metabric (data_expression_median.txt).
-Buffa dataset was initially downloaded from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE22219 (GSE22219_non-normalized_data_mRNA.csv).
 Hatzis dataset was initally downloaded from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE25055  (.CEL download then mas5 normalization).
+Saal dataset was initially downloaded from https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE96058.
 
 
 # License
